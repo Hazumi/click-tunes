@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ClickTunes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Geo" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/lib/paper-full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.4/howler.min.js"></script>
+    <script type="text/paperscript" canvas="myCanvas">
+
+    var keyData = {
+      q: {
+        color: "purple",
+        sound: new Howl({
+          src: ['assets/audio/piston-2.mp3']
+        })
+      },
+      w: {
+        color: "green",
+        sound: new Howl({
+          src: ['assets/audio/clay.mp3']
+        })
+      },
+      e: {
+        color: "yellow",
+        sound: new Howl({
+          src: ['assets/audio/confetti.mp3']
+        })
+      },
+      a: {
+        color: "blue",
+        sound: new Howl({
+          src: ['assets/audio/dotted-spiral.mp3']
+        })
+      },
+      s: {
+        color: "orange",
+        sound: new Howl({
+          src: ['assets/audio/flash-3.mp3']
+        })
+      },
+      d: {
+        color: "deeppink",
+        sound: new Howl({
+          src: ['assets/audio/glimmer.mp3']
+        })
+      },
+      z: {
+        color: "gold",
+        sound: new Howl({
+          src: ['assets/audio/moon.mp3']
+        })
+      },
+      x: {
+        color: "skyblue",
+        sound: new Howl({
+          src: ['assets/audio/wipe.mp3']
+        })
+      },
+      c: {
+        color: "lime",
+        sound: new Howl({
+          src: ['assets/audio/pinwheel.mp3']
+        })
+      },
+      click: {
+        color: "black",
+        sound: new Howl({
+          src: ['assets/audio/bubbles.mp3']
+        })
+      }
+    }
+
+    var circles = [];
+
+    function onKeyDown(e) {
+      if(keyData[e.key]) {
+        keyData[e.key].color
+        var maxPoint = new Point(view.size.width, view.size.height);
+        var randomPoint = Point.random();
+        var point = maxPoint * randomPoint;
+        var newCircle = new Path.Circle(point, 250);
+        newCircle.fillColor = keyData[e.key].color;
+        keyData[e.key].sound.play();
+        circles.push(newCircle);
+      }
+    }
+
+    function onFrame(e) {
+      for(var i = 0; i < circles.length; i++) {
+        circles[i].scale(.97);
+        circles[i].fillColor.hue += 1;
+        if(circles[i].area < 1) {
+          circles[i].remove();
+          circles.splice(i, 1);
+          i--;
+        }
+      }
+    }
+
+    function onMouseDown(e) {
+      keyData['click'].sound.play();
+      var newCircle = new Path.Circle(e.point, 250);
+      newCircle.fillColor = "black";
+      circles.push(newCircle);
+    }
+
+    </script>
+  </head>
+  <body>
+
+    <h1>ClickTunes</h1>
+
+    <canvas id="myCanvas" resize></canvas>
+    <p>Use mouse to click and press "q w e a s d z x c" keys.<p>
+
+    <div class="keyboard">
+      <span class="ltr">q</span>
+      <span class="ltr">w</span>
+      <span class="ltr">e</span>
+      <br>
+      <span class="ltr">a</span>
+      <span class="ltr">s</span>
+      <span class="ltr">d</span>
+      <br>
+      <span class="ltr">z</span>
+      <span class="ltr">x</span>
+      <span class="ltr">c</span>
+      <br>
+      <span id="mouse">click</span>
+    </div>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>
